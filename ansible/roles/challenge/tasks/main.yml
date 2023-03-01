@@ -1,0 +1,25 @@
+---
+# tasks file for challenge
+- name: update motd
+  lineinfile: 
+    line: 'Provisioned by ansible!'
+    dest: /etc/motd
+    create: yes
+    state: present
+
+- name: install nginx and firewalld
+  apt:
+    name:
+    - nginx
+    - firewalld
+    state: present
+- name: start firewalld service
+  service: name=firewalld state=started enabled=yes
+
+- name: configure firewall
+  firewalld: 
+    source: 10.0.0.0/8
+    state: enabled
+    permanent: yes
+    immediate: yes
+    zone: public
